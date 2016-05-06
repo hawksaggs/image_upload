@@ -1,0 +1,4 @@
+#!/usr/bin/nodejs
+var debug = require('debug')('image_upload');
+require('../server');
+// console.log(server);
