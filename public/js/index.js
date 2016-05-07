@@ -54,7 +54,7 @@ $('#login-submit').click(function(){
     var data = (result);
     if(data['success']){
       $('#error-msg').hide();
-      window.location.href = window.location.href+"/"+data['data']['username'];
+      window.location.href = window.location.origin+"/"+data['data']['username'];
 
     }else{
         $('#error-msg').show().text(data['message']);
