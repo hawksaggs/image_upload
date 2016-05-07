@@ -4,7 +4,7 @@ var apiOptions = {
   server:"http://localhost:5000"
 };
 if(process.env.NODE_ENV === 'production'){
-  apiOptions.server = "https://enigmatic-dawn-96603.herokuapp.com";
+  apiOptions.server = window.location.href;
 }
 var renderSigninPage = function(req, res, data){
   console.log(data);
@@ -50,7 +50,7 @@ module.exports = {
   login: function(req, res){
     // console.log(req);
     var postdata,path,requestOptions;
-    path = apiOptions.server + '/api/login';
+    path = apiOptions.server + 'api/login';
     postdata = {
       email: req.body.email,
       password: MD5(req.body.password)
