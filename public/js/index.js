@@ -53,6 +53,7 @@ $('#login-submit').click(function(){
     data:login,
   }).done(function(result){
     var data = (result);
+    console.log(result);
     if(data['success']){
       $('#error-msg').hide();
       window.location.href = window.location.href+data['data']['username'];
