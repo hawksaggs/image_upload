@@ -4,7 +4,7 @@ var apiOptions = {
   server:"http://localhost:5000"
 };
 if(process.env.NODE_ENV === 'production'){
-  apiOptions.server = window.location.href;
+  apiOptions.server = "https://fast-ocean-83004.herokuapp.com";
 }
 var renderSigninPage = function(req, res, data){
   console.log(data);
@@ -41,16 +41,16 @@ module.exports = {
     };
     // console.log(requestOptions);
     request(requestOptions, function(err, response, body){
-      if(err){res.send(err);}
+      if(err){throw err;}
       else {
-        res.send(body);
+        renderSigninPage(req, res, body);
       }
     });
   },
   login: function(req, res){
     // console.log(req);
     var postdata,path,requestOptions;
-    path = apiOptions.server + 'api/login';
+    path = apiOptions.server + '/api/login';
     postdata = {
       email: req.body.email,
       password: MD5(req.body.password)
@@ -79,7 +79,7 @@ module.exports = {
               success: true,
               data:req.session.user[0]
         }
-        res.send(viewModel);
+        res.
 
       } else{
         var viewModel = {

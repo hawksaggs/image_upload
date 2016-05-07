@@ -3,7 +3,7 @@ var requestOptions = {
   server: "http://localhost:5000"
 };
 if(process.env.NODE_ENV === 'production'){
-  requestOptions.server = "https://enigmatic-dawn-96603.herokuapp.com";
+  requestOptions.server = "https://fast-ocean-83004.herokuapp.com";
 }
 var renderHomePage = function(req, res, data){
   if(data){

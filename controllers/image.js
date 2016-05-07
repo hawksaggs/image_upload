@@ -15,7 +15,7 @@ var apiOptions = {
   server:"http://localhost:5000"
 };
 if(process.env.NODE_ENV === 'production'){
-  apiOptions.server = "https://enigmatic-dawn-96603.herokuapp.com";
+  apiOptions.server = "https://fast-ocean-83004.herokuapp.com";
 }
 var _showError = function(req, res, status){
   var title, content;
