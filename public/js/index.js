@@ -1,29 +1,29 @@
 $('.form').find('input, textarea').on('keyup blur focus', function (e) {
 
   var $this = $(this),
-      label = $this.prev('label');
+  label = $this.prev('label');
 
-	  if (e.type === 'keyup') {
-			if ($this.val() === '') {
-          label.removeClass('active highlight');
-        } else {
-          label.addClass('active highlight');
-        }
-    } else if (e.type === 'blur') {
-    	if( $this.val() === '' ) {
-    		label.removeClass('active highlight');
-			} else {
-		    label.removeClass('highlight');
-			}
-    } else if (e.type === 'focus') {
-
-      if( $this.val() === '' ) {
-    		label.removeClass('highlight');
-			}
-      else if( $this.val() !== '' ) {
-		    label.addClass('highlight');
-			}
+  if (e.type === 'keyup') {
+    if ($this.val() === '') {
+      label.removeClass('active highlight');
+    } else {
+      label.addClass('active highlight');
     }
+  } else if (e.type === 'blur') {
+    if( $this.val() === '' ) {
+      label.removeClass('active highlight');
+    } else {
+      label.removeClass('highlight');
+    }
+  } else if (e.type === 'focus') {
+
+    if( $this.val() === '' ) {
+      label.removeClass('highlight');
+    }
+    else if( $this.val() !== '' ) {
+      label.addClass('highlight');
+    }
+  }
 
 });
 
@@ -52,17 +52,15 @@ $('#login-submit').click(function(){
     type:'POST',
     data:login,
     success: function(result){
-    var data = (result);
-    console.log(result);
-    if(data['success']){
-      $('#error-msg').hide();
-      window.location.href = window.location.origin+'/'+data['data']['username'];
-
-    }else{
+      var data = (result);
+      console.log(result);
+      if(data['success']){
+        $('#error-msg').hide();
+        window.location.href = window.location.origin+'/'+data['data']['username'];
+      }else{
         $('#error-msg').show().text(data['message']);
+      }
     }
-  }
-});
   });
 });
 
@@ -76,11 +74,11 @@ $('#signup-submit').click(function(){
     // console.log(result);
     var data = result;
     if(data['success']){
-        $('#success-msg').show().text(data['message']);
-        $('#error-msg').hide();
+      $('#success-msg').show().text(data['message']);
+      $('#error-msg').hide();
     }else{
-        $('#error-msg').show().text(data['message']);
-        $('#success-msg').hide();
+      $('#error-msg').show().text(data['message']);
+      $('#success-msg').hide();
     }
   });
 });
