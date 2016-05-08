@@ -79,8 +79,6 @@ module.exports = {
               success: true,
               data:req.session.user[0]
         }
-        res.
-
       } else {
         var viewModel = {
               message:body.message,
