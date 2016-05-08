@@ -1,6 +1,6 @@
 var home = require('../controllers/home'),
-	image = require('../controllers/image');
-	signin = require('../controllers/signin');
+	image = require('../controllers/image'),
+	signin = require('../controllers/signin'),
 	logout = require('../controllers/logout');
 	var express = require('express'),
 	router = express.Router();

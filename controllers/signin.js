@@ -81,7 +81,7 @@ module.exports = {
         }
         res.
 
-      } else{
+      } else {
         var viewModel = {
               message:body.message,
               success: false
