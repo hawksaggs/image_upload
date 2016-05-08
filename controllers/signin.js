@@ -88,9 +88,9 @@ module.exports = {
         // res.render('signin', {layout:false, data:{
         //   message:body.message,
         // }});
-        res.send(viewModel);
-      }
 
+      }
+res.send(viewModel);
     });
   },
   logout: function(req, res){

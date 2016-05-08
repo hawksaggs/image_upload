@@ -44,9 +44,9 @@ $('.tab a').on('click', function (e) {
 
 $('#login-submit').click(function(){
   var login = $('#login-form').serialize();
-  console.log(document.domain);
-  console.log(window.location);
-  console.log(window.location.href);
+  // console.log(document.domain);
+  // console.log(window.location);
+  // console.log(window.location.href);
   $.ajax({
     url:'/login',
     type:'POST',
@@ -56,7 +56,7 @@ $('#login-submit').click(function(){
       console.log(result);
       if(data['success']){
         $('#error-msg').hide();
-        window.location.href = window.location.origin+'/'+data['data']['username'];
+        window.location.href = window.location.href+data['data']['username'];
       }else{
         $('#error-msg').show().text(data['message']);
       }
