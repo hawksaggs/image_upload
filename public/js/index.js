@@ -51,7 +51,7 @@ $('#login-submit').click(function(){
     url:'/login',
     type:'POST',
     data:login,
-  }).done(function(result){
+    success: function(result){
     var data = (result);
     console.log(result);
     if(data['success']){
@@ -61,6 +61,8 @@ $('#login-submit').click(function(){
     }else{
         $('#error-msg').show().text(data['message']);
     }
+  }
+});
   });
 });
 
