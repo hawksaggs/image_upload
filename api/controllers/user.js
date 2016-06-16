@@ -34,5 +34,24 @@ module.exports = {
       }
 
     });
+  },
+  facebook: function(req, res){
+    User.find({"facebook.id":req.body.id}, function(err, user){
+      if(err){
+        return sendJsonResponse(res, 400, err);
+      }else{
+        if(user.length > 0){
+          return sendJsonResponse(res, 200, user);
+        }else{
+            User.create({
+              first_name:req.body.name,
+              facebook:{id: req.body.id}
+            }, function(err, userData){
+              if(err){return sendJsonResponse(res, 400, err);}
+              return sendJsonResponse(res, 200, {"data":userData,"success":true,"message":"Account created successfully"});
+            });
+        }
+      }
+    });
   }
 }

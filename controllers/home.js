@@ -59,4 +59,14 @@ module.exports = {
     //res.send('The home:index controller');
 
   },
+  signout: function(req, res){
+    console.log(req);
+    // req.session.destroy();
+    // res.redirect('/');
+    var viewModel = {
+      // message:body.message,
+      success: false
+    }
+    res.send(viewModel);
+  }
 };

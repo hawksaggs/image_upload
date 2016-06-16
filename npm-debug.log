@@ -17,7 +17,7 @@
 10 error You can get their info via:
 10 error     npm owner ls image_upload
 10 error There is likely additional logging output above.
-11 error System Linux 4.2.0-35-generic
+11 error System Linux 4.2.0-36-generic
 12 error command "/usr/bin/nodejs" "/usr/bin/npm" "start"
 13 error cwd /home/ayush/Project
 14 error node -v v0.10.25

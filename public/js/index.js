@@ -44,25 +44,39 @@ $('.tab a').on('click', function (e) {
 
 $('#login-submit').click(function(){
   var login = $('#login-form').serialize();
-  // console.log(document.domain);
-  // console.log(window.location);
-  // console.log(window.location.href);
   $.ajax({
     url:'/login',
     type:'POST',
     data:login,
     success: function(result){
       var data = (result);
-      console.log(result);
       if(data['success']){
-        $('#error-msg').hide();
         window.location.href = window.location.href+data['data']['username'];
       }else{
-        $('#error-msg').show().text(data['message']);
+        $('#error-msg').show().text(data['message']).delay(2000).fadeOut("fast");
+        // window.scrollTo(0,200);
       }
     }
   });
 });
+// $('#login-facebook').click(function(){
+//   var login = $('#login-form').serialize();
+//   $.ajax({
+//     url:'/auth/facebook',
+//     type:'POST',
+//     data:login,
+//     success: function(result){
+//       var data = (result);
+//       console.log(data);
+//       if(data['success']){
+//         window.location.href = window.location.href+data['data']['username'];
+//       }else{
+//         $('#error-msg').show().text(data['message']).delay(2000).fadeOut("fast");
+//         // window.scrollTo(0,200);
+//       }
+//     }
+//   });
+// });
 
 $('#signup-submit').click(function(){
   var signup = $('#signup-form').serialize();
@@ -71,14 +85,17 @@ $('#signup-submit').click(function(){
     type:'POST',
     data:signup,
   }).done(function(result){
-    // console.log(result);
     var data = result;
     if(data['success']){
-      $('#success-msg').show().text(data['message']);
-      $('#error-msg').hide();
+      $('#success-msg').show().text(data['message']).delay(2000).fadeOut("fast");
+      $('#signup-form')[0].reset();
+      setTimeOut(function(){
+        $('.tab-content > div').not('#login').hide();
+        $('#login').fadeIn(600);
+      },1000);
+
     }else{
-      $('#error-msg').show().text(data['message']);
-      $('#success-msg').hide();
+      $('#error-msg').show().text(data['message']).delay(2000).fadeOut("fast");
     }
   });
 });

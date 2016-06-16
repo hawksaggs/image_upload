@@ -37,5 +37,17 @@ $(document).ready(function(){
 	// 		});
 	// 	}
 	// });
+	// $('#logout').click(function(){
+	// 	var data = "session_destroy=true";
+	//   $.ajax({
+	//     url:'/signout',
+	//     type:'GET',
+	//     data:data,
+	//     success:function(data){
+	//       console.log(data);
+	//     }
+	//
+	//   });
+	// });
 
 });

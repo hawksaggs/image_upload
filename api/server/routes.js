@@ -14,4 +14,5 @@ var express = require('express'),
 
 	router.post('/signin', user.create);
 	router.post('/login', user.login);
+	router.post('/facebook', user.facebook);
 	module.exports = router;
