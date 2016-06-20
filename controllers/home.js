@@ -34,7 +34,7 @@ var renderHomePage = function(req, res, data){
 module.exports = {
   index: function (req, res) {
     // console.log(req.session.user);
-    if(req.session.user){
+    if(req.session.user != undefined){
       var path,apiRequest;
       path = '/api/images/user/'+req.session.user[0]._id;
       apiRequest = {
@@ -54,7 +54,7 @@ module.exports = {
 
       });
     }else {
-      res.redirect('/signin',{layout:false});
+      res.redirect('/',{layout:false});
     }
     //res.send('The home:index controller');
 

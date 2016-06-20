@@ -7,7 +7,7 @@ html {
 }
 
 body {
-  background: #c1bdba;
+  background: #fff;
   font-family: 'Titillium Web', sans-serif;
 }
 
@@ -74,7 +74,7 @@ h1 {
   margin: 0 0 40px;
 }
 
-label {
+/*label {
   position: absolute;
   -webkit-transform: translateY(6px);
           transform: translateY(6px);
@@ -85,7 +85,7 @@ label {
   -webkit-backface-visibility: hidden;
   pointer-events: none;
   font-size: 22px;
-}
+}*/
 label .req {
   margin: 2px;
   color: #1ab188;
@@ -175,4 +175,39 @@ textarea {
 .forgot {
   margin-top: -20px;
   text-align: right;
+}
+
+.mtop100 {
+  margin-top: 100px;
+}
+
+.navbar {
+  background-color: #3a3c3e;
+}
+
+.panel-primary > .panel-heading {
+  background-color: #3a3c3e;
+  border-color: #3a3c3e;
+}
+
+.panel-default > .panel-heading {
+  background-color: #3a3c3e;
+  border-color: #3a3c3e;
+  color: #fff;
+}
+
+.panel-primary {
+  border-color: #3a3c3e;
+}
+
+.panel-default {
+  border-color: #3a3c3e;
+}
+
+label {
+  color:#179b77 !important;
+}
+
+.mtop70 {
+  margin-top: 70px;
 }

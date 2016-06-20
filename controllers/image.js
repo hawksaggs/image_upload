@@ -4,13 +4,18 @@ sidebar = require('../helpers/sidebar'),
 // Models = require('../models'),
 md5 = require('MD5');
 var request = require('request');
+var cloudinary = require('cloudinary');
 // var sendJsonResponse = function(res, status, content){
 // 	res.status = status;
 // 	res.json(content);
 // };
 // var imagemagick = require('imagemagick');
 var imageResize = require('node-image-resize');
-
+cloudinary.config({
+  cloud_name: 'hawksaggs',
+  api_key: '829366987741749',
+  api_secret: 'X4OOLklvZqxR8XDYcN1P7VALNUo'
+});
 var apiOptions = {
   server:"http://localhost:5000"
 };
@@ -63,6 +68,7 @@ module.exports = {
       json:{}
     },
     request(requestOptions, function(err, response, body){
+      console.log(body);
       if(err){ throw err;}
       else {
         renderIndexPage(req, res, body);
@@ -82,8 +88,36 @@ module.exports = {
       targetPath = path1.resolve('./public/upload/'+ imgUrl + ext);
       if(req.session.user){
         if(ext === '.png' || ext === '.jpg' || ext === '.jpeg' || ext === '.gif' ){
-          fs.rename(tempPath, targetPath, function(err){
-            if(err) {throw err;}
+          // fs.rename(tempPath, targetPath, function(err){
+          //   if(err) {throw err;}
+          // });
+          cloudinary.uploader.upload(tempPath,function(result){
+            console.log(req.body);
+            console.log(result);
+            console.log(result.secure_url);
+            if(result.secure_url){
+              var requestOptions, postdata,path;
+              path = '/api/images';
+              postdata = {
+                title: req.body.title,
+                description: req.body.description,
+                filename:result.secure_url,
+                user_id:req.session.user[0]._id
+              };
+              requestOptions = {
+                url: apiOptions.server + path,
+                method: "POST",
+                json: postdata
+              };
+              // console.log(requestOptions);
+              request(requestOptions, function(err,response, body){
+                // console.log(body);
+                // console.log(response);
+                if(err) {throw err;}
+                else {res.redirect('/images/'+ body._id);}
+              });
+            }
+
           });
           // console.log(targetPath);
           // console.log(gulp);
@@ -100,26 +134,7 @@ module.exports = {
           //     });
           //   });
           // });
-          var requestOptions, postdata,path;
-          path = '/api/images';
-          postdata = {
-            title: req.body.title,
-            description: req.body.description,
-            filename:imgUrl + ext,
-            user_id:req.session.user[0]._id
-          };
-          requestOptions = {
-            url: apiOptions.server + path,
-            method: "POST",
-            json: postdata
-          };
-          // console.log(requestOptions);
-          request(requestOptions, function(err,response, body){
-            // console.log(body);
-            // console.log(response);
-            if(err) {throw err;}
-            else {res.redirect('/images/'+ body._id);}
-          });
+
         }
       } else {
         res.redirect('/signin',{layout:false});
@@ -146,7 +161,7 @@ module.exports = {
     })
   },
   comment: function (req, res) {
-    // console.log(req);
+    // console.log(req.session);
     var requestOptions, postdata,path;
     path = '/api/images/'+ req.params.image_id + '/comment';
     postdata = {
@@ -154,6 +169,7 @@ module.exports = {
       email: req.body.email,
       comment: req.body.comment,
       gravatar: md5(req.body.email),
+      user_id:req.session.user[0]._id,
     };
     requestOptions = {
       url: apiOptions.server + path,
