@@ -155,7 +155,7 @@ textarea {
   padding: 15px 0;
   font-size: 2rem;
   font-weight: 600;
-  text-transform: uppercase;
+  /*text-transform: uppercase;*/
   letter-spacing: .1em;
   background: #1ab188;
   color: #ffffff;
