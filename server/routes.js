@@ -10,7 +10,7 @@ var express = require('express'),
 	router.get('/:username', home.index);
 	router.get('/images/:image_id', image.index);
 	router.get('/signin',signin.index);
-	// router.get('/auth/facebook',signin.facebook);
+	router.get('/auth/facebook',signin.facebook);
 	// router.get('signout', home.signout);
 	// router.get('/logout1', function(req, res){
 	// 	req.session.destroy(function(){

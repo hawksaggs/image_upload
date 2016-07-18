@@ -18,7 +18,16 @@ var renderSigninPage = function(req, res, data){
 }
 module.exports = {
   index: function(req, res){
+    // console.log(req.session);
+    // console.log(req.session.user);
+    // console.log(req.user);
     if(req.session.user){
+      res.redirect('/'+req.session.user[0]._id);
+    }else if(req.user){
+      var session = req.session;
+      session.user = [];
+      session.user[0] = req.user;
+      // console.log(req.session.user[0]);
       res.redirect('/'+req.session.user[0]._id);
     }else{
       res.render('signin',{layout:false});
@@ -88,7 +97,7 @@ module.exports = {
       session.user = data;
       var username = data[0].facebook.id;
       session.user[0].username = username;
-      console.log(req.session);
+      // console.log(req.session);
       var viewModel = {
         message:"Login Successfully",
         success: true,

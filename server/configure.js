@@ -14,6 +14,7 @@ var express = require('express'),
 	passport = require('passport'),
 	FacebookStrategy = require('passport-facebook').Strategy,
 	session = require('express-session');
+	var User = require('../api/model/user');
 	var apiOptions = {
 	  server:"http://localhost:5000"
 	};
@@ -21,7 +22,8 @@ var express = require('express'),
 	  apiOptions.server = "https://fast-ocean-83004.herokuapp.com";
 	}
 
-
+// console.log(process.env);
+// console.log(process.env.FACEBOOK_CLIENT_ID);
 module.exports = function(app) {
 	//configuration code.....
 	app.engine('handlebars', exphbs.create({
@@ -47,6 +49,8 @@ module.exports = function(app) {
 	app.use(methodOverride());
 	app.use(cookieParser('some-secret-value-here'));
 	app.use(session({secret:'hahaha'}));
+	app.use(passport.initialize());
+	app.use(passport.session());
 	app.use('/public/', express.static(path.join(__dirname, '../public')));
 	if ('development' === app.get('env')) {
 	app.use(errorHandler());
@@ -62,20 +66,31 @@ module.exports = function(app) {
 });
 
 	passport.serializeUser(function(user,done){
-    done(null,user.id);
+		// console.log(user);
+		// console.log(user.facebook.id);
+    done(null,user.facebook.id);
   });
+
   passport.deserializeUser(function(id, done){
-    User.findById(id, function(err, user){
-      done(err, user);
+		// console.log(id);
+    User.find({"facebook.id":id}, function(err, user){
+			// console.log(user[0]);
+			var user = user[0];
+			// console.log(temp.toString());
+      done(null, user);
+			// var session = req.session;
+			// session.user = body;
+			// var username = body[0].email.split("@");
+			// session.user[0].username = username[0];
     });
   });
   passport.use(new FacebookStrategy({
-      clientID : '589099754591838',
-      clientSecret: '62a12af88a52b66775efa44ff9bf9046',
-      callbackURL: 'http://localhost:5000/auth/facebook/callback',
+      clientID : process.env.FACEBOOK_CLIENT_ID,
+      clientSecret: process.env.FACEBOOK_SECRET_KEY,
+      callbackURL: process.env.FACEBOOK_CALLBACK_URL,
 
   }, function(token, refreshToken, profile, done){
-    console.log(profile);
+    // console.log(profile);
     process.nextTick(function(){
 			var postdata,path,requestOptions;
 	    path = apiOptions.server + '/api/facebook';
@@ -94,17 +109,17 @@ module.exports = function(app) {
 			request(requestOptions,function(err, response, body){
 				// console.log(body);
 				if(err){throw err;}
-				path = apiOptions.server + '/facebook';
-				postdata = {
-					data:body,
-				};
-				requestOptions = {
-		      url: path,
-		      method:'POST',
-		      json:postdata
-		    };
-				request(requestOptions,function(err, response, body){
-					if(err){throw err;}
+				// path = apiOptions.server + '/facebook';
+				// postdata = {
+				// 	data:body,
+				// };
+				// requestOptions = {
+		    //   url: path,
+		    //   method:'POST',
+		    //   json:postdata
+		    // };
+				// request(requestOptions,function(err, response, body){
+					// if(err){throw err;}
 					// if(body.length > 0){
           //   if(body.success){
           //     response.redirect('/'+body.data[0].username);
@@ -114,12 +129,13 @@ module.exports = function(app) {
           // }else{
           //   response.redirect('/');
           // }
-				});
+				// });
+				return done(err,body[0]);
 			});
     });
   }));
 
-	app.get('/auth/facebook',passport.authenticate('facebook',{scope:'email'}));
+	app.get('/auth/facebook',passport.authenticate('facebook',{scope:['email','user_likes']}));
 	app.get('/auth/facebook/callback',passport.authenticate('facebook', {successRedirect : '/',failureRedirect: '/login'}),function(req, res) {res.redirect('/');});
 	app.use('/',routes);
 	app.use('/api',routesApi);
