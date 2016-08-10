@@ -1,14 +1,13 @@
-var Comments = require('./comments.js');
-var async = require('async');
+var Comments = require('./comments'),
+    Images = require('./images'),
+    Stats = require('./stats');
+
 module.exports = function(viewModel, callback){
-  async.parallel([
-    function(next){
-      Comments.newest(next);
-    }
-  ], function(err, results){
+  // console.log(viewModel);
     viewModel.sidebar = {
-      comments: results[0]
+      stats:Stats(viewModel),
+      popular:Images.popular(),
+      comments:Comments.newest()
     };
     callback(viewModel);
-  });
-}
+};

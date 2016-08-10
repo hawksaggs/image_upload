@@ -90,7 +90,7 @@ module.exports = function(app) {
       callbackURL: process.env.FACEBOOK_CALLBACK_URL,
 
   }, function(token, refreshToken, profile, done){
-    // console.log(profile);
+    console.log(profile);
     process.nextTick(function(){
 			var postdata,path,requestOptions;
 	    path = apiOptions.server + '/api/facebook';
@@ -141,5 +141,11 @@ module.exports = function(app) {
 	app.use('/api',routesApi);
 
 	// routes(app);
+	process.on("uncaughtException", function(err){
+		console.error((new Date()).toUTCString() + " uncaughtException: " + err.message);
+    console.error(err.stack);
+    process.exit(1);
+	});
+	
 	return app;
 };

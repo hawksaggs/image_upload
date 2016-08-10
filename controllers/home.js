@@ -1,4 +1,5 @@
 var request = require('request');
+var sidebar = require('../helpers/sidebar');
 var requestOptions = {
   server: "http://localhost:5000"
 };
@@ -29,7 +30,10 @@ var renderHomePage = function(req, res, data){
   //
   // });
   // console.log(viewModel);
-  res.render('index',viewModel);
+  sidebar(viewModel, function(viewModel){
+      res.render('index',viewModel);
+  });
+
 }
 module.exports = {
   index: function (req, res) {

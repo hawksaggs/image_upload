@@ -50,7 +50,10 @@ var renderIndexPage = function(req, res, data){
       comments:data.comment,
       user:req.session.user[0],
     };
-    res.render('image', viewModel);
+    sidebar(viewModel, function(viewModel){
+        res.render('image', viewModel);
+    });
+
   }
 
 };
@@ -68,7 +71,7 @@ module.exports = {
       json:{}
     },
     request(requestOptions, function(err, response, body){
-      console.log(body);
+      // console.log(body);
       if(err){ throw err;}
       else {
         renderIndexPage(req, res, body);
@@ -92,9 +95,9 @@ module.exports = {
           //   if(err) {throw err;}
           // });
           cloudinary.uploader.upload(tempPath,function(result){
-            console.log(req.body);
-            console.log(result);
-            console.log(result.secure_url);
+            // console.log(req.body);
+            // console.log(result);
+            // console.log(result.secure_url);
             if(result.secure_url){
               var requestOptions, postdata,path;
               path = '/api/images';
