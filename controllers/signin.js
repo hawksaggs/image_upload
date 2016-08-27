@@ -1,31 +1,40 @@
 var request = require('request');
 var MD5 = require('MD5');
+var LocalStrategy = require('passport-local').Strategy;
+var FacebookStrategy = require('passport-facebook').Strategy;
+var passport = require('passport');
 var apiOptions = {
   server:"http://localhost:5000"
 };
 if(process.env.NODE_ENV === 'production'){
-  apiOptions.server = "https://enigmatic-dawn-96603.herokuapp.com";
+  apiOptions.server = "https://fast-ocean-83004.herokuapp.com";
 }
 var renderSigninPage = function(req, res, data){
-  console.log(data);
-  // req.session.user.first_name = data.first_name;
-  // req.session.user.last_name = data.last_name;
-  // req.session.user.email = data.email;
-  // req.session.user.uniqueId = data._id;
-  // console.log(req.session);
   var viewModel = {
-    msg:{message:"asass"}
+    message:data.message,
+    success:data.success
   };
-  // console.log(viewModel);
-  res.render('signin',{layout:false, data:viewModel});
+  res.send(viewModel);
 }
 module.exports = {
   index: function(req, res){
-    // console.log('hi');
-    res.render('signin',{layout:false});
+    // console.log(req.session);
+    // console.log(req.session.user);
+    // console.log(req.user);
+    if(req.session.user){
+      res.redirect('/'+req.session.user[0]._id);
+    }else if(req.user){
+      var session = req.session;
+      session.user = [];
+      session.user[0] = req.user;
+      // console.log(req.session.user[0]);
+      res.redirect('/'+req.session.user[0]._id);
+    }else{
+      res.render('signin',{layout:false});
+    }
+
   },
   create: function(req, res){
-    // console.log(req.body);
     var postdata,path,requestOptions;
     path = apiOptions.server + '/api/signin';
     postdata = {
@@ -39,7 +48,6 @@ module.exports = {
       method:'POST',
       json:postdata
     };
-    // console.log(requestOptions);
     request(requestOptions, function(err, response, body){
       if(err){throw err;}
       else {
@@ -48,7 +56,6 @@ module.exports = {
     });
   },
   login: function(req, res){
-    // console.log(req);
     var postdata,path,requestOptions;
     path = apiOptions.server + '/api/login';
     postdata = {
@@ -60,37 +67,49 @@ module.exports = {
       method:'POST',
       json:postdata
     };
-    console.log(requestOptions);
     request(requestOptions, function(err, response, body){
-      // console.log(response);
-      console.log(body);
-      // console.log(body.message);
       if(err){throw err;}
       if(body.length > 0){
         var session = req.session;
         session.user = body;
-
         var username = body[0].email.split("@");
         session.user[0].username = username[0];
-        console.log(req.session);
-        res.redirect('/'+username[0]);
-      } else{
-        // var viewModel = {
-        //   msg:{
-        //       message:body.message
-        //   }
-        //
-        // }
-        // console.log(viewModel);
-        res.render('signin', {layout:false, data:{
+        var viewModel = {
+          message:"Login Successfully",
+          success: true,
+          data:req.session.user[0]
+        }
+      } else {
+        var viewModel = {
           message:body.message,
-        }});
+          success: false
+        }
       }
-
+      res.send(viewModel);
     });
   },
-  logout: function(req, res){
-    req.session.destroy();
-    res.redirect('/');
+  facebook:function(req, res){
+    // console.log(req);
+    var data = req.body.data;
+    // console.log(data);
+    if(data){
+      var session = req.session;
+      session.user = data;
+      var username = data[0].facebook.id;
+      session.user[0].username = username;
+      // console.log(req.session);
+      var viewModel = {
+        message:"Login Successfully",
+        success: true,
+        data:req.session.user
+      }
+    } else {
+      var viewModel = {
+        message:req.body.message,
+        success: false
+      }
+    }
+    res.send(viewModel);
+    // res.redirect('/'+username);
   }
-}
+};

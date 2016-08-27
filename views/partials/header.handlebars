@@ -1,34 +1,57 @@
-<header class="header-user-dropdown">
+<!-- <header class="header-user-dropdown">
 
-	<div class="header-limiter">
-		{{#if user}}
-		<h1><a href="/{{user.username}}">Neu<span>ProElectro</span></a></h1>
-		{{else}}
-		<h1><a href="/">Neu<span>ProElectro</span></a></h1>
-		{{/if}}
+<div class="header-limiter">
 {{#if user}}
-		<nav>
-			<!-- <a href="#">Overview</a>
-			<a href="#">Surveys</a>
-			<a href="#">Reports</a>
-			<a href="#">Roles <span class="header-new-feature">new</span></a> -->
-		</nav>
-    <!-- <ul>
-			<li><a href="/signin">Login/SignUp</a></li>
-			<li><a href="#">Sign up</a></li>
-		</ul> -->
+<h1><a href="/{{user.username}}">Neu<span>ProElectro</span></a></h1>
+{{else}}
+<h1><a href="/">Neu<span>ProElectro</span></a></h1>
+{{/if}}
+{{#if user}}
+<nav> -->
+<!-- <a href="#">Overview</a>
+<a href="#">Surveys</a>
+<a href="#">Reports</a>
+<a href="#">Roles <span class="header-new-feature">new</span></a> -->
+<!-- </nav> -->
+<!-- <ul>
+<li><a href="/signin">Login/SignUp</a></li>
+<li><a href="#">Sign up</a></li>
+</ul> -->
+<!-- <li><a href="signout" class="highlight" id="logout">Logout</a></li> -->
+<!-- <div class="header-user-menu">
+<img src="assets/2.jpg" alt="User Image"/>
 
-		<div class="header-user-menu">
-			<img src="assets/2.jpg" alt="User Image"/>
+<ul> -->
+<!-- <li><a href="#">Settings</a></li>
+<li><a href="#">Payments</a></li> -->
+<!-- <li><a href="signout" class="highlight" id="logout">Logout</a></li>
+</ul>
 
-			<ul>
-				<!-- <li><a href="#">Settings</a></li>
-				<li><a href="#">Payments</a></li> -->
-				<li><a href="/logout" class="highlight">Logout</a></li>
-			</ul>
-		</div>
+</div>
+{{/if}}
+
+</div>
+
+</header> -->
+<nav class="navbar navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <!-- <a class="navbar-brand" href="#">Neu Product</a> -->
+      {{#if user}}
+      <h1><a href="/{{user.username}}" class="navbar-brand">Neu<span>ProElectro</span></a></h1>
+      {{else}}
+      <h1><a href="/" class="navbar-brand">Neu<span>ProElectro</span></a></h1>
+      {{/if}}
+    </div>
+    {{#if user}}
+    <ul class="nav navbar-nav navbar-right">
+      <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Account<span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li><a href="/signout" id="logout">Logout</a></li>
+        </ul>
+      </li>
+    </ul>
     {{/if}}
-
-	</div>
-
-</header>
+  </div>
+</nav>
