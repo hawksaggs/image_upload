@@ -71,11 +71,22 @@ module.exports = {
     }
   },
   latestComment: function(req,res){
-    Comment.find({"user_id":req.params.user_id},{},{$limit:5,$sort:{'timestamp':-1}}, function(err, result){
+    Comment.find({"user_id":req.params.user_id},{},{$limit:5,$sort:{"timestamp":-1}}, function(err, result){
       if(err){
         sendJsonResponse(res,400,err);
       }
       sendJsonResponse(res,200,result);
     });
+    // Comment.aggregate(
+    //   {$match:{user_id:req.params.user_id}},
+    //   {$limit:5},
+    //   {$sort:{timestamp:-1}},
+    //   function(err, result){
+    //   console.log(result);
+    //   if(err){
+    //       sendJsonResponse(res,400,err);
+    //     }
+    //     sendJsonResponse(res,200,result);
+    // });
   }
 }
