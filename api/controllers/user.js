@@ -11,7 +11,7 @@ module.exports = {
     User.find({"email":req.body.email}, function(err, user){
       if(err){ return sendJsonResponse(res, 400, err);}
       // console.log('user:'+user);
-      if(user.length > 0){return sendJsonResponse(res, 400, {"message":"User is already registered"})}
+      if(user.length > 0){return sendJsonResponse(res, 400, {"message":"User is already registered","success":false});}
       User.create({
         first_name:req.body.first_name,
         last_name:req.body.last_name,
@@ -19,7 +19,7 @@ module.exports = {
         password:req.body.password
       }, function(err, userData){
         if(err){return sendJsonResponse(res, 400, err);}
-        return sendJsonResponse(res, 200, userData);
+        return sendJsonResponse(res, 200, {"data":userData,"success":true,"message":"Account created successfully"});
       });
     });
   },
@@ -33,6 +33,25 @@ module.exports = {
         return sendJsonResponse(res, 400, {"message":"Invalid Username or Password"});
       }
 
+    });
+  },
+  facebook: function(req, res){
+    User.find({"facebook.id":req.body.id}, function(err, user){
+      if(err){
+        return sendJsonResponse(res, 400, err);
+      }else{
+        if(user.length > 0){
+          return sendJsonResponse(res, 200, user);
+        }else{
+            User.create({
+              first_name:req.body.name,
+              facebook:{id: req.body.id}
+            }, function(err, userData){
+              if(err){return sendJsonResponse(res, 400, err);}
+              return sendJsonResponse(res, 200, {"data":userData,"success":true,"message":"Account created successfully"});
+            });
+        }
+      }
     });
   }
 }
