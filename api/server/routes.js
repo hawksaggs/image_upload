@@ -9,6 +9,7 @@ var express = require('express'),
 	router.get('/images/user/:user_id', image.index);
 	router.get('/images/:image_id', image.imageGet);
 	router.get('/helpers/stats/:user_id',helpers.stats);
+	router.get('/helpers/latestComment/:user_id',helpers.latestComment);
 
 	router.post('/images', image.imageCreate);
 	router.post('/images/:image_id/like', image.like);

@@ -18,8 +18,8 @@ var renderSigninPage = function(req, res, data){
 }
 module.exports = {
   index: function(req, res){
-    // console.log(req.session);
     // console.log(req.session.user);
+    // console.log(req.session);
     // console.log(req.user);
     if(req.session.user){
       res.redirect('/'+req.session.user[0]._id);

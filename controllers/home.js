@@ -7,6 +7,7 @@ if(process.env.NODE_ENV === 'production'){
   requestOptions.server = "https://fast-ocean-83004.herokuapp.com";
 }
 var renderHomePage = function(req, res, data){
+  // console.log(data);
   if(data){
     var viewModel = {
       success: true,
@@ -19,18 +20,9 @@ var renderHomePage = function(req, res, data){
       // images:data
     };
   }
-
-  // var i=0;
-  // data.forEach(function(index){
-  //    console.log(index);
-  //    viewModel.images[i]['uniqueId'] = index._id;
-  //    viewModel.images[i]['filename'] = index.filename;
-  //    viewModel.images[i]['title'] = index.title;
-  //    i=i+1;
-  //
-  // });
   // console.log(viewModel);
   sidebar(viewModel, function(viewModel){
+    // console.log(viewModel);
       res.render('index',viewModel);
   });
 
@@ -58,7 +50,7 @@ module.exports = {
 
       });
     }else {
-      res.redirect('/',{layout:false});
+      res.redirect('/');
     }
     //res.send('The home:index controller');
 
