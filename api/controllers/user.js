@@ -1,5 +1,7 @@
 var User = require('../model/user');
 var mongoose = require('mongoose');
+var jwt = require('jsonwebtoken');
+var cookieParser = require('cookie');
 
 var sendJsonResponse = function(res, status, content){
   res.status(status);
@@ -24,10 +26,12 @@ module.exports = {
     });
   },
   login: function(req, res){
-    // console.log(req);
-    User.find({"email": req.body.email,"password":req.body.password}, function(err, user){
+    User.findOne({"email": req.body.email,"password":req.body.password}).lean().exec(function(err, user){
       if(err){ return sendJsonResponse(res, 400, err);}
-      if(user.length > 0){
+      if(user){
+        delete user.password;
+        user.token = jwt.sign(user,process.env.JWT_SECRET,{expiresIn: 1440});
+        res.cookie('token',user.token,{maxAge:900000,httpOnly: true});
         return sendJsonResponse(res, 200, user);
       } else {
         return sendJsonResponse(res, 400, {"message":"Invalid Username or Password"});
@@ -53,5 +57,16 @@ module.exports = {
         }
       }
     });
+  },
+  authenticate: function(req, res){
+    this.token = req.query.token;
+    if(this.token != 'undefined'){
+      jwt.verify(this.token, process.env.JWT_SECRET, function(err, decoded){
+        if(err) return sendJsonResponse(res,500,err);
+        return sendJsonResponse(res,200,decoded);
+      });
+    }else{
+      return sendJsonResponse(res,400,{message:"No Token"});
+    }
   }
 }

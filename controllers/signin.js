@@ -3,6 +3,9 @@ var MD5 = require('MD5');
 var LocalStrategy = require('passport-local').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
 var passport = require('passport');
+var async = require('async');
+var cookieParser = require('cookie');
+var authenticate = require('../helpers/authenticate');
 var apiOptions = {
   server:"http://localhost:5000"
 };
@@ -18,17 +21,28 @@ var renderSigninPage = function(req, res, data){
 }
 module.exports = {
   index: function(req, res){
-    // console.log(req.session.user);
-    // console.log(req.session);
-    // console.log(req.user);
-    if(req.session.user){
-      res.redirect('/'+req.session.user[0]._id);
-    }else if(req.user){
-      var session = req.session;
-      session.user = [];
-      session.user[0] = req.user;
-      // console.log(req.session.user[0]);
-      res.redirect('/'+req.session.user[0]._id);
+    this.username;
+    this.path,this.apiRequest;
+    this.cookie = cookieParser.parse(req.headers.cookie);
+    if(this.cookie.token != undefined){
+      async.waterfall([
+        function(callback){
+          authenticate.authenticate(this.cookie.token, callback);
+        },
+        function(isAuthenticated,callback){
+          if(isAuthenticated.statusCode === 500 || isAuthenticated.statusCode === 400){
+            res.render('signin',{layout:false});
+          }else if(isAuthenticated.statusCode == 200){
+            this.data = JSON.parse(isAuthenticated.body);
+            this.username = this.data.email.split('@');
+            this.username = this.username[0];
+            res.redirect('/'+this.username);
+          }
+          // callback(null,isAuthenticated);
+        }
+      ], function(err, result){
+        if(err){ return res.redirect('/');}
+      });
     }else{
       res.render('signin',{layout:false});
     }
@@ -69,15 +83,12 @@ module.exports = {
     };
     request(requestOptions, function(err, response, body){
       if(err){throw err;}
-      if(body.length > 0){
-        var session = req.session;
-        session.user = body;
-        var username = body[0].email.split("@");
-        session.user[0].username = username[0];
+      if(body){
+        body.username = body.email.split("@");
         var viewModel = {
           message:"Login Successfully",
           success: true,
-          data:req.session.user[0]
+          data:body
         }
       } else {
         var viewModel = {
@@ -88,28 +99,28 @@ module.exports = {
       res.send(viewModel);
     });
   },
-  facebook:function(req, res){
-    // console.log(req);
-    var data = req.body.data;
-    // console.log(data);
-    if(data){
-      var session = req.session;
-      session.user = data;
-      var username = data[0].facebook.id;
-      session.user[0].username = username;
-      // console.log(req.session);
-      var viewModel = {
-        message:"Login Successfully",
-        success: true,
-        data:req.session.user
-      }
-    } else {
-      var viewModel = {
-        message:req.body.message,
-        success: false
-      }
-    }
-    res.send(viewModel);
-    // res.redirect('/'+username);
-  }
+  // facebook:function(req, res){
+  //   // console.log(req);
+  //   var data = req.body.data;
+  //   // console.log(data);
+  //   if(data){
+  //     var session = req.session;
+  //     session.user = data;
+  //     var username = data[0].facebook.id;
+  //     session.user[0].username = username;
+  //     // console.log(req.session);
+  //     var viewModel = {
+  //       message:"Login Successfully",
+  //       success: true,
+  //       data:req.session.user
+  //     }
+  //   } else {
+  //     var viewModel = {
+  //       message:req.body.message,
+  //       success: false
+  //     }
+  //   }
+  //   res.send(viewModel);
+  //   // res.redirect('/'+username);
+  // }
 };

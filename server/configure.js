@@ -38,37 +38,27 @@ module.exports = function(app) {
 	}).engine);
 	app.set('view engine', 'handlebars');
 
-	//app.use(connect.logger('dev'));
 	app.use(morgan('dev'));
-	// app.use(connect.bodyParser({
-	// uploadDir:path.join(__dirname, '../public/upload/temp')
-	// }));
 	app.use(bodyParser.urlencoded({'extended': true}));
 	app.use(bodyParser.json());
 	app.use(multer({dest:path.join(__dirname, '../public/upload/temp')}).single('file'));
 	app.use(methodOverride());
-	app.use(cookieParser('some-secret-value-here'));
+	app.use(cookieParser());
 	app.use(session({secret:'hahaha'}));
 	app.use(passport.initialize());
 	app.use(passport.session());
 	app.use('/public/', express.static(path.join(__dirname, '../public')));
+	
 	if ('development' === app.get('env')) {
 	app.use(errorHandler());
 	}
 	app.get('/signout', function(req, res){
-		if(req.session.user){
-			req.session.destroy(function(){
-				res.redirect('/');
-			});
-		}else{
-				res.redirect('/');
-		}
+		res.clearCookie('token');
+		res.redirect('/');
 });
 
 	passport.serializeUser(function(user,done){
-		// console.log(user);
-		// console.log(user.facebook.id);
-    done(null,user.facebook.id);
+		done(null,user.facebook.id);
   });
 
   passport.deserializeUser(function(id, done){

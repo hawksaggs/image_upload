@@ -1,3 +1,18 @@
+// var token = window.localStorage.getItem('token');
+// console.log(token);
+// if(token){
+//   $.ajaxSetup({
+//     headers: {
+//       'x-access-token':token
+//     }
+//   });
+// }
+function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+    var expires = "expires="+ d.toUTCString();
+    document.cookie = cname + "=" + cvalue + "; " + expires;
+}
 $('.form').find('input, textarea').on('keyup blur focus', function (e) {
 
   var $this = $(this),
@@ -49,9 +64,12 @@ $('#login-submit').click(function(){
     type:'POST',
     data:login,
     success: function(result){
+      // console.log(result.data);
       var data = (result);
       if(data['success']){
-        window.location.href = window.location.href+data['data']['username'];
+        // window.localStorage.setItem('token',data.data.token);
+        setCookie('token',data.data.token,1);
+        window.location.href = window.location.href+data['data']['username'][0];
       }else{
         $('#error-msg').show().text(data['message']).delay(2000).fadeOut("fast");
         // window.scrollTo(0,200);
