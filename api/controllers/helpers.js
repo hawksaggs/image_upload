@@ -81,7 +81,7 @@ module.exports = {
         as:'image'
       }},
       {$limit:5},
-      {$sort:{timestamp:-1}}
+      {$sort:{'timestamp':-1}}
       ).
       exec(function(err, result){
       // console.log(result[0].image[0].filename);
@@ -92,10 +92,11 @@ module.exports = {
     });
   },
   popularImage: function(req, res){
+    console.log(req.params.user_id);
     Image.aggregate(
       {$match:{"user_id":mongoose.Types.ObjectId(req.params.user_id)}},
       {$limit:5},
-      {$sort:{likes:-1}}
+      {$sort:{'likes':-1}}
       ).
       exec(function(err, result){
       // console.log(result);
