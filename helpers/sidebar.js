@@ -13,24 +13,21 @@ if(process.env.NODE_ENV === 'production'){
 module.exports = function(viewModel, callback){
   // console.log(viewModel);
   var data = viewModel.user._id;
-    // viewModel.sidebar = {
-    //   stats:Stats(viewModel),
-    //   popular:Images.popular(),
-    //   comments:Comments.newest()
-    // };
-    // callback(viewModel);
     async.parallel({
       stats : function(callback){
         stats(data, callback);
       },
       comments:function(callback){
         newestComment(data,callback);
+      },
+      images: function (callback) {
+        popularImage(data,callback);
       }
     },function(error, result){
       if(error){
         callback(error, null);
       }else{
-        // console.log(result);
+        console.log(result);
         viewModel.sidebar = result;
         callback(viewModel);
       }
@@ -55,6 +52,24 @@ module.exports = function(viewModel, callback){
 
     function stats(data, callback){
       this.path = '/api/helpers/stats/' + data;
+
+      this.apiRequest = {
+        url: requestOptions.server + this.path,
+        method: 'GET',
+        json: {}
+      };
+
+      request(this.apiRequest, function(err, response, body){
+        if(err){callback(err, null);}else{
+        // console.log('stats');
+        // console.log(body);
+        callback(null,body);
+      }
+      });
+    };
+
+    function popularImage(data, callback){
+      this.path = '/api/helpers/popularImage/' + data;
 
       this.apiRequest = {
         url: requestOptions.server + this.path,

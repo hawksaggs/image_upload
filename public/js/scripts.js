@@ -1,6 +1,14 @@
 $(document).ready(function(){
-	// alert('sds');
+	
+	$(".nav-tabs a").click(function(){
+		// var tab = this.href;
+		// tab = tab.split('#');
+		// $('.tab-content > div:last-child').show();
+        $(this).tab('show');
+    });
+
 	$('#post-comment').hide();
+	
 	$('#btncomment').on('click', function(event){
 		event.preventDefault();
 

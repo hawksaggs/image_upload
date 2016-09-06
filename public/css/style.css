@@ -35,6 +35,7 @@ a:hover {
   padding: 0;
   margin: 0 0 40px 0;
 }
+
 .tab-group:after {
   content: "";
   display: table;
@@ -63,9 +64,9 @@ a:hover {
   color: #ffffff;
 }
 
-.tab-content > div:last-child {
+/*.tab-content > div:last-child {
   display: none;
-}
+}*/
 
 h1 {
   text-align: center;
@@ -185,7 +186,7 @@ textarea {
   background-color: #3a3c3e;
 }
 
-.panel-primary > .panel-heading {
+/*.panel-primary > .panel-heading {
   background-color: #3a3c3e;
   border-color: #3a3c3e;
 }
@@ -194,15 +195,15 @@ textarea {
   background-color: #3a3c3e;
   border-color: #3a3c3e;
   color: #fff;
-}
+}*/
 
-.panel-primary {
+/*.panel-primary {
   border-color: #3a3c3e;
-}
+}*/
 
-.panel-default {
+/*.panel-default {
   border-color: #3a3c3e;
-}
+}*/
 
 label {
   color:#179b77 !important;

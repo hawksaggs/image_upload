@@ -71,22 +71,37 @@ module.exports = {
     }
   },
   latestComment: function(req,res){
-    Comment.find({"user_id":req.params.user_id},{},{$limit:5,$sort:{"timestamp":-1}}, function(err, result){
+    Comment.aggregate(
+      {$match:{"user_id":mongoose.Types.ObjectId(req.params.user_id)}},
+      {$lookup:{
+        from:'images',
+        localField:'image_id',
+        foreignField:'_id',
+        as:'image'
+      }},
+      {$limit:5},
+      {$sort:{timestamp:-1}}
+      ).
+      exec(function(err, result){
+      // console.log(result[0].image[0].filename);
       if(err){
-        sendJsonResponse(res,400,err);
-      }
-      sendJsonResponse(res,200,result);
+          return sendJsonResponse(res,400,err);
+        }
+        return sendJsonResponse(res,200,result);
     });
-    // Comment.aggregate(
-    //   {$match:{user_id:req.params.user_id}},
-    //   {$limit:5},
-    //   {$sort:{timestamp:-1}},
-    //   function(err, result){
-    //   console.log(result);
-    //   if(err){
-    //       sendJsonResponse(res,400,err);
-    //     }
-    //     sendJsonResponse(res,200,result);
-    // });
+  },
+  popularImage: function(req, res){
+    Image.aggregate(
+      {$match:{"user_id":mongoose.Types.ObjectId(req.params.user_id)}},
+      {$limit:5},
+      {$sort:{likes:-1}}
+      ).
+      exec(function(err, result){
+      // console.log(result);
+      if(err){
+          return sendJsonResponse(res,400,err);
+        }
+        return sendJsonResponse(res,200,result);
+    });
   }
 }

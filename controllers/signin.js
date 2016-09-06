@@ -23,6 +23,9 @@ module.exports = {
   index: function(req, res){
     this.username;
     this.path,this.apiRequest;
+    if(! req.headers.hasOwnProperty('cookie')){
+      res.redirect('/');
+    }
     this.cookie = cookieParser.parse(req.headers.cookie);
     if(this.cookie.token != undefined){
       async.waterfall([
@@ -51,11 +54,15 @@ module.exports = {
   create: function(req, res){
     var postdata,path,requestOptions;
     path = apiOptions.server + '/api/signin';
+    var username = req.body.email.split('@');
+    username = username[0];
     postdata = {
       first_name: req.body.first_name,
       last_name: req.body.last_name,
       email: req.body.email,
-      password: MD5(req.body.password)
+      password: MD5(req.body.password),
+      username:username,
+      gravator:md5(username)
     };
     requestOptions = {
       url: path,
@@ -83,7 +90,7 @@ module.exports = {
     };
     request(requestOptions, function(err, response, body){
       if(err){throw err;}
-      if(body){
+      if(response.statusCode === 200){
         body.username = body.email.split("@");
         var viewModel = {
           message:"Login Successfully",

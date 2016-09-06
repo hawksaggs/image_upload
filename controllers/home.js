@@ -24,6 +24,7 @@ var renderHomePage = function(req, res, data){
   }
 
   sidebar(viewModel, function(viewModel){
+      console.log(viewModel);
       res.render('index',viewModel);
   });
 
@@ -50,6 +51,7 @@ module.exports = {
               json: {}
             },
             request(apiRequest, function(err, response, body){
+              // console.log(body);
               if(err){ return callback(err, null);}
               this.data = {};
               this.data.user = JSON.parse(isAuthenticated.body);

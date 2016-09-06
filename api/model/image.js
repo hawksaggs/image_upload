@@ -10,4 +10,4 @@ var imageSchema = new mongoose.Schema({
 	user_id: {type:mongoose.Schema.ObjectId}
 });
 // console.log(imageSchema);
-  module.exports = mongoose.model('Image', imageSchema);
+  module.exports = mongoose.model('image', imageSchema);

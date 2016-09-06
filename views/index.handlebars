@@ -1,63 +1,137 @@
-<div class="panel panel-primary mtop100">
-  <div class="panel-heading">
-    <h3 class="panel-title">
-      Upload an Image
-    </h3>
+<div class="col-sm-3 well mtop100">
+  <div class="well">
+    <!--<p><a href="#">My Profile</a></p>-->
+    <!--<img src="images.jpg" class="img-circle" height="65" width="65" alt="Avatar">-->
+    <a href="#"><img class="media-object img-circle" src="http://www.gravatar.com/avatar/{{gravatar}}?d=monsterid&s=80"></a>
   </div>
-  <form method="post" action="/images" enctype="multipart/form-data">
-    <div class="panel-body form-horizontal">
-      <div class="form-group col-md-12">
-        <label class="col-sm-2 control-label"
-        for="file">Browse:</label>
-        <div class="col-md-10">
-          <input class="form-control" type="file"
-          name="file">
-        </div>
-      </div>
-      <div class="form-group col-md-12">
-        <label class="col-md-2 control-label"
-        for="title">Title:</label>
-        <div class="col-md-10">
-          <input class="form-control" type="text"
-          name="title">
-        </div>
-      </div>
-      <div class="form-group col-md-12">
-        <label class="col-md-2 control-label"
-        for="description">Description:</label>
-        <div class="col-md-10">
-          <textarea class="form-control" name="description"
-          rows="2"></textarea>
-        </div>
-      </div>
-      <div class="form-group col-md-12">
-        <div class="col-md-12 text-right">
-          <button type="submit" id="login-btn" class="btn
-          btn-primary" ><i class="fa fa-cloud-upload "></i> Upload
-          Image</button>
-        </div>
-      </div>
+  <div class="well">
+    <p><a href="#">Interests</a></p>
+    <p>
+      <span class="label label-default">News</span>
+      <span class="label label-primary">W3Schools</span>
+      <span class="label label-success">Labels</span>
+      <span class="label label-info">Football</span>
+      <span class="label label-warning">Gaming</span>
+      <span class="label label-danger">Friends</span>
+    </p>
+  </div>
+  <div class="alert alert-success fade in">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+    <p><strong>Ey!</strong></p>
+    People are looking at your profile. Find out who.
+  </div>
+  <p><a href="#">Link</a></p>
+  <p><a href="#">Link</a></p>
+  <p><a href="#">Link</a></p>
+  <div class="well">
+    <p>Popular Images</p>
+    {{#each sidebar.images}}
+    <div class="thumbnail">
+      <!--<img src="{{filename}}" alt="{{title}}" width="400" height="300">-->
+       <a href="/images/{{_id}}"><img src="{{filename}}" alt="{{title}}" style="width: 100%" class=""></a>
     </div>
-  </form>
+    {{/each}}
+    <!--<div class="thumbnail">
+      <img src="images.jpg" alt="Paris" width="400" height="300">
+    </div>-->
+  </div>
 </div>
-<div class="panel panel-default">
-  <div class="panel-heading">
-    <h3 class="panel-title">
-      Newest Images
-    </h3>
-  </div>
-
-  <div class="panel-body">
-    {{#if images}}
-    {{#each images}}
-    <div class="col-md-4 text-center" style="padding-bottom:1em;">
-      <a href="/images/{{_id}}"><img src="{{filename}}" alt="{{title}}" style="width: 175px; height: 175px;"class="img-thumbnail"></a></div>
-      {{/each}}
-
-      {{else}}
-      <div class="col-md-4 text-center" style="padding-bottom:1em;">
-        <p>No Newest Image Found</p>
+<div class="col-sm-9 mtop100">
+  <div class="row">
+    <div class="col-sm-12">
+      <ul class="nav nav-tabs">
+        <li class="active"><a href="#status">Status</a></li>
+        <li><a href="#image">Upload Image</a></li>
+      </ul>
+      <div class="tab-content">
+        <div id="status" class="tab-pane fade in active">
+          <div class="panel panel-default text-left">
+            <div class="panel-body">
+              <p contenteditable="true">Status: Feeling Blue</p>
+              <!--<button type="button" class="btn btn-default btn-sm">
+              <span class="glyphicon glyphicon-thumbs-up"></span> Like
+              </button>-->
+            </div>
+          </div>
+        </div>
+        <div id="image" class="tab-pane fade">
+          <div class="panel panel-primary well">
+            <form method="post" action="/images" enctype="multipart/form-data">
+              <div class="panel-body form-horizontal">
+                <div class="form-group col-md-12">
+                  <label class="col-sm-2 control-label" for="file">Browse:</label>
+                  <div class="col-md-10">
+                    <input class="form-control" type="file" name="file">
+                  </div>
+                </div>
+                <div class="form-group col-md-12">
+                  <label class="col-md-2 control-label" for="title">Title:</label>
+                  <div class="col-md-10">
+                    <input class="form-control" type="text" name="title">
+                  </div>
+                </div>
+                <div class="form-group col-md-12">
+                  <label class="col-md-2 control-label" for="description">Description:</label>
+                  <div class="col-md-10">
+                    <textarea class="form-control" name="description" rows="2"></textarea>
+                  </div>
+                </div>
+                <div class="form-group col-md-12">
+                  <div class="col-md-12 text-right">
+                    <button type="submit" id="login-btn" class="btn
+                      btn-primary"><i class="fa fa-cloud-upload "></i> Upload
+                    Image</button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
       </div>
-      {{/if}}
     </div>
   </div>
+  <!--<div class="row">
+    <div class="col-sm-3">
+      <div class="well">
+        <p>John</p>
+        <img src="images.jpg" class="img-circle" height="55" width="55" alt="Avatar">
+      </div>
+    </div>
+    <div class="col-sm-9">
+      <div class="well">
+        <p>Just Forgot that I had to mention something about someone to someone about how I forgot something, but now
+          I forgot it. Ahh, forget it! Or wait. I remember.... no I don't.
+        </p>
+      </div>
+    </div>
+  </div>-->
+  {{#if images}}
+    {{#each images}}
+  <div class="panel panel-primary well">
+  <div class="panel-heading">
+    <h2 class="panel-title">{{ title }}</h2>
+  </div>
+  <div class="panel-body">
+    <p>{{ description }}</p>
+    <div class="col-md-12 text-center">
+      <a href="/images/{{_id}}"><img src="{{filename}}" alt="{{title}}" style="width: 100%" class=""></a>
+    </div>
+  </div>
+  <div class="panel-footer">
+    <div class="row">
+      <div class="col-md-12">
+        <button class="btn btn-success" id="btn-like" dataid="{{
+          _id }}"><i class="fa fa-heart"> Like</i></button>
+          <strong class="likes-count">{{ likes }}</strong>
+          &nbsp; - &nbsp; <i class="fa fa-eye"></i> <strong>{{ views }}</
+            strong>
+            &nbsp; - &nbsp; Posted: <em class="text-muted">{{
+              timeago timestamp }}</em>
+            </div>
+          </div>
+        </div>
+      </div>
+  {{/each}}
+  {{/if}}
+</div>
+

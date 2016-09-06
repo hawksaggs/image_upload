@@ -1,8 +1,7 @@
-var mongoose = require('mongoose');
+var mongoose = require('mongoose'),
+	Image = require('../model/image'),
+	Comment = require('../model/comment');
 
-var Image = require('../model/image');
-var Comment = require('../model/comment');
-// console.log(Image);
 var sendJsonResponse = function(res, status, content){
 	res.status = status;
 	res.json(content);
@@ -12,11 +11,25 @@ module.exports = {
 
 	index: function(req, res){
 // console.log(req);
-		Image.find({"user_id":req.params.user_id}, function(err, image){
-			// console.log(image);
-			if(err) {sendJsonResponse(res, 400, err);}
-			else { sendJsonResponse(res, 200, image);}
-		}).limit(6);
+		// Image.find({"user_id":req.params.user_id}, function(err, image){
+		// 	// console.log(image);
+		// 	if(err) {sendJsonResponse(res, 400, err);}
+		// 	else { sendJsonResponse(res, 200, image);}
+		// }).limit(6);
+		Image.aggregate(
+			{$match:{'user_id':mongoose.Types.ObjectId(req.params.user_id)}},
+			{$lookup:{
+				from:'users',
+				localField:'user_id',
+				foreignField:'_id',
+				as:'user'
+			}},
+			{$limit:6},
+			{$sort:{'timestamp':-1}}
+			).exec(function(err, image){
+			if(err) {return sendJsonResponse(res, 400, err);}
+			return  sendJsonResponse(res, 200, image);
+		});
 	},
 	imageCreate: function(req, res){
 		// console.log(Image);

@@ -10,6 +10,7 @@ var image = require('../controllers/image'),
 	router.get('/images/:image_id', image.imageGet);
 	router.get('/helpers/stats/:user_id',helpers.stats);
 	router.get('/helpers/latestComment/:user_id',helpers.latestComment);
+	router.get('/helpers/popularImage/:user_id',helpers.popularImage);
 	router.get('/authenticate/me', user.authenticate);
 
 	router.post('/images', image.imageCreate);

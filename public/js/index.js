@@ -67,6 +67,7 @@ $('#login-submit').click(function(){
       // console.log(result.data);
       var data = (result);
       if(data['success']){
+        console.log(data);
         // window.localStorage.setItem('token',data.data.token);
         setCookie('token',data.data.token,1);
         window.location.href = window.location.href+data['data']['username'][0];

@@ -184,6 +184,7 @@ module.exports = {
           if(isAuthenticated.statusCode === 500 || isAuthenticated.statusCode === 400){
             res.redirect('/');
           }else if(isAuthenticated.statusCode === 200){
+            isAuthenticated.body = JSON.parse(isAuthenticated.body);
             this.path = '/api/images/'+ this.image_id + '/comment';
             this.postdata = {
               name: req.body.name,

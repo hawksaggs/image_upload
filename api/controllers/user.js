@@ -18,7 +18,8 @@ module.exports = {
         first_name:req.body.first_name,
         last_name:req.body.last_name,
         email:req.body.email,
-        password:req.body.password
+        password:req.body.password,
+        username:req.body.username
       }, function(err, userData){
         if(err){return sendJsonResponse(res, 400, err);}
         return sendJsonResponse(res, 200, {"data":userData,"success":true,"message":"Account created successfully"});
