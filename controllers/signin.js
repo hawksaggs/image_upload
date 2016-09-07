@@ -23,31 +23,32 @@ module.exports = {
   index: function(req, res){
     this.username;
     this.path,this.apiRequest;
-    if(! req.headers.hasOwnProperty('cookie')){
-      res.redirect('/');
-    }
-    this.cookie = cookieParser.parse(req.headers.cookie);
-    if(this.cookie.token != undefined){
-      async.waterfall([
-        function(callback){
-          authenticate.authenticate(this.cookie.token, callback);
-        },
-        function(isAuthenticated,callback){
-          if(isAuthenticated.statusCode === 500 || isAuthenticated.statusCode === 400){
-            res.render('signin',{layout:false});
-          }else if(isAuthenticated.statusCode == 200){
-            this.data = JSON.parse(isAuthenticated.body);
-            this.username = this.data.email.split('@');
-            this.username = this.username[0];
-            res.redirect('/'+this.username);
+    if(req.headers.hasOwnProperty('cookie')){
+      this.cookie = cookieParser.parse(req.headers.cookie);
+      if(this.cookie.token != undefined){
+        async.waterfall([
+          function(callback){
+            authenticate.authenticate(this.cookie.token, callback);
+          },
+          function(isAuthenticated,callback){
+            if(isAuthenticated.statusCode === 500 || isAuthenticated.statusCode === 400){
+              res.render('signin',{layout:false});
+            }else if(isAuthenticated.statusCode == 200){
+              this.data = JSON.parse(isAuthenticated.body);
+              this.username = this.data.email.split('@');
+              this.username = this.username[0];
+              res.redirect('/'+this.username);
+            }
+            // callback(null,isAuthenticated);
           }
-          // callback(null,isAuthenticated);
-        }
-      ], function(err, result){
-        if(err){ return res.redirect('/');}
-      });
+        ], function(err, result){
+          if(err){ return res.redirect('/');}
+        });
+      }else{
+        res.render('signin',{layout:false});
+      }
     }else{
-      res.render('signin',{layout:false});
+      res.redirect('/');
     }
 
   },
