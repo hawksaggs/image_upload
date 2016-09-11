@@ -131,4 +131,4 @@ module.exports = {
   //   res.send(viewModel);
   //   // res.redirect('/'+username);
   // }
-};
+}
