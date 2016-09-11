@@ -1,7 +1,9 @@
 var mongoose = require('mongoose'),
 	Image = require('../model/image'),
-	Comment = require('../model/comment');
-
+	Comment = require('../model/comment'),
+	User = require('../model/user'),
+	async = require('async')
+	;
 var sendJsonResponse = function(res, status, content){
 	res.status = status;
 	res.json(content);
@@ -18,17 +20,28 @@ module.exports = {
 		// }).limit(6);
 		Image.aggregate(
 			{$match:{'user_id':mongoose.Types.ObjectId(req.params.user_id)}},
-			{$lookup:{
-				from:'users',
-				localField:'user_id',
-				foreignField:'_id',
-				as:'user'
-			}},
+			// {$lookup:{
+			// 	from:'users',
+			// 	localField:'user_id',
+			// 	foreignField:'_id',
+			// 	as:'user'
+			// }},
 			{$limit:6},
 			{$sort:{'timestamp':-1}}
 			).exec(function(err, image){
-			if(err) {return sendJsonResponse(res, 400, err);}
-			return  sendJsonResponse(res, 200, image);
+			if(err) {return sendJsonResponse(res, 500, err);}
+			// return  sendJsonResponse(res, 200, image);
+			async.forEach(image,function(data,callback){
+				User.findOne({_id:data.user_id}).exec(function(err,user){
+					if(err){ return sendJsonResponse(res, 500, err); }
+					image.user = user;
+					callback(null);
+				});
+			},function(err){
+				// console.log(image);
+				if(err) {return sendJsonResponse(res, 500, err);}
+				return sendJsonResponse(res, 200, image);
+			});
 		});
 	},
 	imageCreate: function(req, res){

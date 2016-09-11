@@ -74,21 +74,28 @@ module.exports = {
     console.log(req.params.user_id);
     Comment.aggregate(
       {$match:{"user_id":mongoose.Types.ObjectId(req.params.user_id)}},
-      {$lookup:{
-        from:'images',
-        localField:'image_id',
-        foreignField:'_id',
-        as:'image'
-      }},
+      // {$lookup:{
+      //   from:'images',
+      //   localField:'image_id',
+      //   foreignField:'_id',
+      //   as:'image'
+      // }},
       {$limit:5},
       {$sort:{'timestamp':-1}}
       ).
       exec(function(err, result){
-      // console.log(result[0].image[0].filename);
-      if(err){
-          return sendJsonResponse(res,400,err);
-        }
-        return sendJsonResponse(res,200,result);
+      // console.log(result);
+      if(err){ return sendJsonResponse(res,400,err);}
+      async.forEach(result,function(comment,callback){
+        Image.findOne({_id:comment.image_id}).exec(function(err, image){
+          if(err){return sendJsonResponse(res, 500, err);}
+          result.image = image;
+          callback(null);
+        });
+      },function(err){
+        if(err){return sendJsonResponse(res, 500, err);}
+        return sendJsonResponse(res, 200, result);
+      });
     });
   },
   popularImage: function(req, res){
