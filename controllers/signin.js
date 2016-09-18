@@ -63,7 +63,7 @@ module.exports = {
       email: req.body.email,
       password: MD5(req.body.password),
       username:username,
-      gravator:md5(username)
+      gravator:MD5(username)
     };
     requestOptions = {
       url: path,
