@@ -34,7 +34,7 @@ module.exports = {
   index: function (req, res) {
     this.path,this.apiRequest;
     this.cookie = cookieParser.parse(req.headers.cookie);
-    if(this.cookie.token != undefined){
+    if(this.cookie.token != undefined || this.cookie.token != ''){
       async.waterfall([
         function(callback){
           authenticate.authenticate(this.cookie.token, callback);
