@@ -10,6 +10,7 @@ if(process.env.NODE_ENV === 'production'){
   requestOptions.server = "https://fast-ocean-83004.herokuapp.com";
 }
 var renderHomePage = function(req, res, data){
+  // console.log(data);
   if(data){
     var viewModel = {
       success: true,
@@ -27,7 +28,6 @@ var renderHomePage = function(req, res, data){
       // console.log(viewModel);
       res.render('index',viewModel);
   });
-
 }
 
 module.exports = {
