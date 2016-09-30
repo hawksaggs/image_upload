@@ -1,15 +1,8 @@
-<<<<<<< HEAD
 var request = require('request');
 var sidebar = require('../helpers/sidebar');
 var authenticate = require('../helpers/authenticate');
 var cookieParser = require('cookie');
 var async = require('async');
-||||||| merged common ancestors
-var request = require('request');
-=======
-var request = require('request');
-var sidebar = require('../helpers/sidebar');
->>>>>>> 3a8f0bb0b6de3ec3ee36968d5264eeb983efe650
 var requestOptions = {
   server: "http://localhost:5000"
 };
