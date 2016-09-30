@@ -11,4 +11,6 @@ var userSchema = new mongoose.Schema({
   google:{id:{type:String}}
 });
 
+userSchema.index({first_name:'text',last_name:'text'});
+
 module.exports = mongoose.model('User', userSchema);

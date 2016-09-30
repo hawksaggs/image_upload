@@ -27,7 +27,7 @@ module.exports = function(viewModel, callback){
       if(error){
         callback(error, null);
       }else{
-        console.log(result);
+        // console.log(result);
         viewModel.sidebar = result;
         callback(viewModel);
       }

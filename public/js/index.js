@@ -8,10 +8,10 @@
 //   });
 // }
 function setCookie(cname, cvalue, exdays) {
-    var d = new Date();
-    d.setTime(d.getTime() + (exdays*24*60*60*1000));
-    var expires = "expires="+ d.toUTCString();
-    document.cookie = cname + "=" + cvalue + "; " + expires;
+  var d = new Date();
+  d.setTime(d.getTime() + (exdays*24*60*60*1000));
+  var expires = "expires="+ d.toUTCString();
+  document.cookie = cname + "=" + cvalue + "; " + expires;
 }
 $('.form').find('input, textarea').on('keyup blur focus', function (e) {
 
@@ -56,8 +56,7 @@ $('.tab a').on('click', function (e) {
   $(target).fadeIn(600);
 
 });
-
-$('#login-submit').click(function(){
+function login(){
   var login = $('#login-form').serialize();
   $.ajax({
     url:'/login',
@@ -77,6 +76,12 @@ $('#login-submit').click(function(){
       }
     }
   });
+}
+$('.login').keypress(function(event){
+  var keycode = (event.keyCode ? event.keyCode : event.which);
+  if(keycode == '13'){
+    login();
+  }
 });
 // $('#login-facebook').click(function(){
 //   var login = $('#login-form').serialize();
@@ -96,8 +101,7 @@ $('#login-submit').click(function(){
 //     }
 //   });
 // });
-
-$('#signup-submit').click(function(){
+function signin(){
   var signup = $('#signup-form').serialize();
   $.ajax({
     url:'/signin',
@@ -112,9 +116,14 @@ $('#signup-submit').click(function(){
         $('.tab-content > div').not('#login').hide();
         $('#login').fadeIn(600);
       },1000);
-
     }else{
       $('#error-msg').show().text(data['message']).delay(2000).fadeOut("fast");
     }
   });
+}
+$('.signin').keypress(function(event){
+  var keycode = (event.keyCode ? event.keyCode : event.which);
+  if(keycode == '13'){
+    signin();
+  }
 });

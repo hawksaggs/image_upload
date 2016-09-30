@@ -31,7 +31,7 @@ module.exports = {
       if(err){ return sendJsonResponse(res, 400, err);}
       if(user){
         delete user.password;
-        user.token = jwt.sign(user,process.env.JWT_SECRET,{expiresIn: 1440});
+        user.token = jwt.sign(user,process.env.JWT_SECRET,{expiresIn:1440});
         res.cookie('token',user.token,{maxAge:900000,httpOnly: true});
         return sendJsonResponse(res, 200, user);
       } else {

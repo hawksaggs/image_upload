@@ -2,14 +2,17 @@ var home = require('../controllers/home'),
 	image = require('../controllers/image'),
 	signin = require('../controllers/signin'),
 	logout = require('../controllers/logout'),
+	search = require('../controllers/search'),
 	passport = require('passport'),
-    express = require('express'),
+  express = require('express'),
 	router = express.Router();
 
 	router.get('/', signin.index);
+	router.get('/search',search.index);
 	router.get('/:username', home.index);
 	router.get('/images/:image_id', image.index);
 	router.get('/signin',signin.index);
+
 	// router.get('/auth/facebook',signin.facebook);
 	// router.get('signout', home.signout);
 	// router.get('/logout1', function(req, res){

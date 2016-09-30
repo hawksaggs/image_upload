@@ -3,7 +3,8 @@ var image = require('../controllers/image'),
 	comment = require('../controllers/comment'),
 	user = require('../controllers/user'),
 	helpers = require('../controllers/helpers'),
-    express = require('express'),
+	search = require('../controllers/search'),
+  express = require('express'),
 	router = express.Router();
 // console.log(router);
 	router.get('/images/user/:user_id', image.index);
@@ -12,6 +13,7 @@ var image = require('../controllers/image'),
 	router.get('/helpers/latestComment/:user_id',helpers.latestComment);
 	router.get('/helpers/popularImage/:user_id',helpers.popularImage);
 	router.get('/authenticate/me', user.authenticate);
+	router.get('/search/:query',search.index);
 
 	router.post('/images', image.imageCreate);
 	router.post('/images/:image_id/like', image.like);

@@ -71,7 +71,7 @@ module.exports = {
     }
   },
   latestComment: function(req,res){
-    console.log(req.params.user_id);
+    // console.log(req.params.user_id);
     Comment.aggregate(
       {$match:{"user_id":mongoose.Types.ObjectId(req.params.user_id)}},
       // {$lookup:{
@@ -99,7 +99,7 @@ module.exports = {
     });
   },
   popularImage: function(req, res){
-    console.log(req.params.user_id);
+    // console.log(req.params.user_id);
     Image.aggregate(
       {$match:{"user_id":mongoose.Types.ObjectId(req.params.user_id)}},
       {$limit:5},

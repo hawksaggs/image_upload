@@ -24,7 +24,7 @@ var renderHomePage = function(req, res, data){
   }
 
   sidebar(viewModel, function(viewModel){
-      console.log(viewModel);
+      // console.log(viewModel);
       res.render('index',viewModel);
   });
 

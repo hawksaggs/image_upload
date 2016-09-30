@@ -34,7 +34,7 @@ module.exports = function(viewModel){
         views: body.views,
         likes: body.likes
       };
-      console.log(stats);
+      // console.log(stats);
       return stats;
 
     // }
