@@ -77,6 +77,26 @@ function login(){
     }
   });
 }
+function signin(){
+  var signup = $('#signup-form').serialize();
+  $.ajax({
+    url:'/signin',
+    type:'POST',
+    data:signup,
+  }).done(function(result){
+    var data = result;
+    if(data['success']){
+      $('#success-msg').show().text(data['message']).delay(2000).fadeOut("fast");
+      $('#signup-form')[0].reset();
+      setTimeOut(function(){
+        $('.tab-content > div').not('#login').hide();
+        $('#login').fadeIn(600);
+      },1000);
+    }else{
+      $('#error-msg').show().text(data['message']).delay(2000).fadeOut("fast");
+    }
+  });
+}
 $('.login').keypress(function(event){
   var keycode = (event.keyCode ? event.keyCode : event.which);
   if(keycode == '13'){
@@ -101,29 +121,15 @@ $('.login').keypress(function(event){
 //     }
 //   });
 // });
-function signin(){
-  var signup = $('#signup-form').serialize();
-  $.ajax({
-    url:'/signin',
-    type:'POST',
-    data:signup,
-  }).done(function(result){
-    var data = result;
-    if(data['success']){
-      $('#success-msg').show().text(data['message']).delay(2000).fadeOut("fast");
-      $('#signup-form')[0].reset();
-      setTimeOut(function(){
-        $('.tab-content > div').not('#login').hide();
-        $('#login').fadeIn(600);
-      },1000);
-    }else{
-      $('#error-msg').show().text(data['message']).delay(2000).fadeOut("fast");
-    }
-  });
-}
 $('.signin').keypress(function(event){
   var keycode = (event.keyCode ? event.keyCode : event.which);
   if(keycode == '13'){
     signin();
   }
 });
+$('#login-submit').click(function(){
+  login();
+});
+$('#signup-submit').click(function(){
+  signin();
+})
