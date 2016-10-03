@@ -17,7 +17,7 @@ var apiOptions = {
   server:"http://localhost:5000"
 };
 if(process.env.NODE_ENV === 'production'){
-  apiOptions.server = "https://fast-ocean-83004.herokuapp.com";
+  apiOptions.server = process.env.API_URL;
 }
 var _showError = function(req, res, status){
   var title, content;
@@ -147,7 +147,7 @@ module.exports = {
           return res.send({success:false,message:"Some error occured!!!"});
         }
         });
-        
+
       });
     }else{
       res.redirect('/');

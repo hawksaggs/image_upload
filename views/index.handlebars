@@ -25,12 +25,16 @@
   <p><a href="#">Link</a></p>
   <div class="well">
     <p>Popular Images</p>
+    {{#if sidebar.images}}
     {{#each sidebar.images}}
     <div class="thumbnail">
       <!--<img src="{{filename}}" alt="{{title}}" width="400" height="300">-->
        <a href="/images/{{_id}}"><img src="{{filename}}" alt="{{title}}" style="width: 100%" class=""></a>
     </div>
     {{/each}}
+    {{else}}
+    <p>No Image Found!!!</p>
+    {{/if}}
     <!--<div class="thumbnail">
       <img src="images.jpg" alt="Paris" width="400" height="300">
     </div>-->
