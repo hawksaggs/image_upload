@@ -8,7 +8,10 @@ var userSchema = new mongoose.Schema({
   gravatar:{type:String},
   password:{type:String},
   facebook:{id:{type:String}},
-  google:{id:{type:String}}
+  google:{id:{type:String}},
+  profile_picture: {type:String},
+  profile_picture_id: {type:String},
+  profile_picture_version: {type:String}
 });
 
 userSchema.index({first_name:'text',last_name:'text'});

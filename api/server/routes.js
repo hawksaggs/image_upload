@@ -18,6 +18,7 @@ var image = require('../controllers/image'),
 	router.post('/images', image.imageCreate);
 	router.post('/images/:image_id/like', image.like);
 	router.post('/images/:image_id/comment', comment.insert);
+	router.post('/profilepicture', image.profilePicture);
 
 	router.post('/signin', user.create);
 	router.post('/login', user.login);

@@ -17,7 +17,6 @@ module.exports = {
       },
       request(this.apiRequest, function(err, response, body){
         if(err){ return callback(err,null);}
-        // console.log(body);
         return callback(null,response);
       });
     }else{

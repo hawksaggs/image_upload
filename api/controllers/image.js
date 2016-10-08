@@ -2,7 +2,8 @@ var mongoose = require('mongoose'),
 	Image = require('../model/image'),
 	Comment = require('../model/comment'),
 	User = require('../model/user'),
-	async = require('async')
+	async = require('async'),
+	jwt = require('jsonwebtoken')
 	;
 var sendJsonResponse = function(res, status, content){
 	res.status = status;
@@ -94,6 +95,20 @@ module.exports = {
 				})
 				}
 
+		});
+	},
+	profilePicture: function(req,res){
+		var body = req.body;
+		var user_id = body.user_id;
+		var update = {
+			profile_picture:req.body.profile_picture,
+			profile_picture_id:req.body.profile_picture_id,
+			profile_picture_version:req.body.profile_picture_version
+		}
+		User.findOneAndUpdate({"_id":user_id},update,{new:true}).lean().exec(function(err,updateResult){
+			if(err){ return sendJsonResponse(res, 500, err);}
+			delete updateResult.password;
+			return sendJsonResponse(res,200,updateResult);
 		});
 	}
 };
