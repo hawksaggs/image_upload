@@ -2,7 +2,15 @@
   <div class="well">
     <!--<p><a href="#">My Profile</a></p>-->
     <!--<img src="images.jpg" class="img-circle" height="65" width="65" alt="Avatar">-->
-    <a href="#"><img class="media-object img-circle" src="http://www.gravatar.com/avatar/{{gravatar}}?d=monsterid&s=80"></a>
+    <form id="profile" method="post" action="/profile_picture" enctype="multipart/form-data">
+      {{#if user.profile_picture_id}}
+        <a href="#"><img class="media-object img-circle" src="https://res.cloudinary.com/hawksaggs/image/upload/w_100,h_100,c_crop,g_face,r_max/w_100/v{{user.profile_picture_version}}/{{user.profile_picture_id}}.png"></a>
+        {{else}}
+        <a href="#"><img class="media-object img-circle" src="http://www.gravatar.com/avatar/{{gravatar}}?d=monsterid&s=80"></a>
+        {{/if}}
+        <input type="file" id="profile_picture" style="display:none" name="file">
+    </form>
+
   </div>
   <div class="well">
     <p><a href="#">Interests</a></p>

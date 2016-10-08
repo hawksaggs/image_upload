@@ -1,5 +1,5 @@
 $(document).ready(function(){
-	
+
 	$(".nav-tabs a").click(function(){
 		// var tab = this.href;
 		// tab = tab.split('#');
@@ -8,7 +8,7 @@ $(document).ready(function(){
     });
 
 	$('#post-comment').hide();
-	
+
 	$('#btncomment').on('click', function(event){
 		event.preventDefault();
 
@@ -57,5 +57,21 @@ $(document).ready(function(){
 	//
 	//   });
 	// });
+	$('.img-circle').click(function(){
+	  $('#profile_picture').trigger('click');
+	});
 
+	$('#profile_picture').on('change',function(){
+	  console.log((this.files));
+		// $.ajax({
+		// 	url:'/profile_picture',
+		// 	data:,
+		// 	method:'POST',
+		// 	success:function(response){
+		// 		console.log(response);
+		// 	}
+		// });
+		$('#profile').submit();
+		
+	});
 });

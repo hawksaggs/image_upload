@@ -7,7 +7,9 @@ var fs = require('fs'),
     md5 = require('MD5'),
     request = require('request'),
     cloudinary = require('cloudinary'),
-    imageResize = require('node-image-resize');
+    imageResize = require('node-image-resize'),
+    Promise = require('promise')
+    ;
 cloudinary.config({
   cloud_name: 'hawksaggs',
   api_key: '829366987741749',
@@ -208,6 +210,84 @@ module.exports = {
         if(err){ return res.redirect('/');}
         res.redirect('/images/'+ result.body.image_id);
       });
+    }
+  },
+  profile_picture: function(req,res){
+    // console.log(req.file);
+    this.path,this.apiRequest,this.postdata,this.requestOptions,this.tempPath;
+    this.cookie = cookieParser.parse(req.headers.cookie);
+    if(this.cookie.token != 'undefined'){
+      async.waterfall([
+        function(callback){
+          authenticate.authenticate(this.cookie.token,callback);
+        },
+        function(isAuthenticated,callback){
+          if(isAuthenticated.statusCode === 500 || isAuthenticated.statusCode === 400){
+            res.redirect('/');
+          }else if(isAuthenticated.statusCode === 200){
+            this.data = JSON.parse(isAuthenticated.body);
+            // console.log(this.data);
+            this.tempPath = req.file.path;
+            var ext = path1.extname(req.file.originalname).toLowerCase();
+            if(ext === '.png' || ext === '.jpg' || ext === '.jpeg' || ext === '.gif' ){
+              return new Promise( function(resolve, reject){
+                if(this.data.profile_picture && this.data.profile_picture.length > 0){
+                  cloudinary.uploader.destroy(this.data.profile_id, function(result){
+                    // console.log(result);
+                    resolve(result);
+                  });
+                }else{
+                  resolve(null);
+                }
+              })
+              .then(function(result){
+                // console.log(result);
+                cloudinary.uploader.upload(this.tempPath,function(result){
+                  console.log(result);
+                  if(result.secure_url){
+                    this.path = '/api/profilepicture';
+                    this.postdata = {
+                      profile_picture:result.secure_url,
+                      user_id:this.data._id,
+                      profile_picture_id:result.public_id,
+                      profile_picture_version:result.version,
+                    };
+                    this.requestOptions = {
+                      url: apiOptions.server + this.path,
+                      method: "POST",
+                      json: this.postdata
+                    };
+                    console.log(this.requestOptions);
+                    request(this.requestOptions, function(err,response, body){
+                      if(err) {return callback(err,null);}
+                      console.log(body);
+                      callback(null,response);
+                    });
+                  }
+                });
+              });
+            }else{
+              res.send({success:false,message:"Image extension not supported"});
+            }
+          }
+        }
+      ], function(err,result){
+        if(err) {return res.send({success:false,message:"Some error occured!!!"});}
+        console.log(result.statusCode);
+        console.log(tempPath);
+        console.log(this.data);
+        fs.unlink(tempPath,function(err){
+          if(err){console.error(err);}
+          if(result.statusCode === 200){
+          res.redirect('/'+this.data.username);
+        }else{
+          return res.send({success:false,message:"Some error occured!!!"});
+        }
+        });
+
+      });
+    }else{
+      res.redirect('/');
     }
   }
 };
