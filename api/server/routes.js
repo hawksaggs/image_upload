@@ -22,4 +22,6 @@ var image = require('../controllers/image'),
 	router.post('/signin', user.create);
 	router.post('/login', user.login);
 	router.post('/facebook', user.facebook);
+
+	router.delete('/images/user/:userId/image/:imageId', image.delete);
 	module.exports = router;

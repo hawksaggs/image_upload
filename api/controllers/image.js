@@ -95,5 +95,19 @@ module.exports = {
 				}
 
 		});
+	},
+	delete: function(req, res) {
+		var imageId = req.params.imageId;
+		var userId = req.params.userId;
+		if (!imageId) return sendJsonResponse(res,400, 'image id is required');
+		
+		Image.deleteOne({ "_id": imageId, 'user_id': userId }, function(err, image) {
+			if(err){ return sendJsonResponse(res, 400, err);}
+			Comment.deleteMany({ 'image_id': imageId }, function(err, comment) {
+				if(err){ return sendJsonResponse(res, 400, err);}
+
+				return sendJsonResponse(res, 200, 'deleted');
+			});
+		});
 	}
 };
