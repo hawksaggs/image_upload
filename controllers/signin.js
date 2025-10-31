@@ -10,7 +10,7 @@ var apiOptions = {
   server:"http://localhost:5000"
 };
 if(process.env.NODE_ENV === 'production'){
-  apiOptions.server = "https://fast-ocean-83004.herokuapp.com";
+  apiOptions.server = process.env.API_URL;
 }
 var renderSigninPage = function(req, res, data){
   var viewModel = {

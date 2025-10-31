@@ -6,7 +6,7 @@ var requestOptions = {
   server: "http://localhost:5000"
 };
 if(process.env.NODE_ENV === 'production'){
-  requestOptions.server = "https://fast-ocean-83004.herokuapp.com";
+  requestOptions.server = process.env.API_URL;
 }
 module.exports = {
   index: function(req,res){
@@ -32,7 +32,7 @@ module.exports = {
               json: {}
             },
             request(apiRequest, function(err, response, body){
-              // console.log(body);
+              console.log(body);
               if(err){ return callback(err, null);}
               return callback(null,body);
             });

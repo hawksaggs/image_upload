@@ -5,6 +5,7 @@
     </h3>
   </div>
   <div class="panel-body">
+    {{#if sidebar.comments}}
     <ul class="media-list">
       {{#each sidebar.comments}}
       <li class="media">
@@ -21,5 +22,8 @@
     </li>
     {{/each}}
   </ul>
+  {{else}}
+  <p>No Comment Found!!!!</p>
+  {{/if}}
 </div>
 </div>

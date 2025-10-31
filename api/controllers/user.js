@@ -64,7 +64,13 @@ module.exports = {
     if(this.token != 'undefined'){
       jwt.verify(this.token, process.env.JWT_SECRET, function(err, decoded){
         if(err) return sendJsonResponse(res,500,err);
-        return sendJsonResponse(res,200,decoded);
+        if(decoded){
+          User.findOne({"_id":decoded._id}).lean().exec(function(err, userResult){
+            if(err) return sendJsonResponse(res,500,err);
+            delete userResult.password;
+            return sendJsonResponse(res,200,userResult);
+          });
+        }
       });
     }else{
       return sendJsonResponse(res,400,{message:"No Token"});

@@ -20,6 +20,7 @@ var home = require('../controllers/home'),
 	// 		res.redirect('/');
 	// 	});
 	// });
+	router.post('/profile_picture', image.profile_picture);
 	router.post('/signin',signin.create);
 	// router.post('/facebook',signin.facebook);
 	router.post('/login',signin.login);
